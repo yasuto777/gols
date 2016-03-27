@@ -4,7 +4,7 @@ import (
 	"fmt"
 	//"io/ioutil"
 	"flag"
-	//"os"
+	"os"
 )
 
 const (
