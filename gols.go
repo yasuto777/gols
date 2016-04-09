@@ -1,14 +1,15 @@
 package main
 
 import (
-	"fmt"
-	//"io/ioutil"
 	"flag"
+	"fmt"
+	"io/ioutil"
 	"os"
 )
 
 const (
 	//Set clolor
+	//ex. fmt.Println(red,"text",reset)
 	black   = "\x1b[30m"
 	red     = "\x1b[31m"
 	green   = "\x1b[32m"
@@ -30,6 +31,16 @@ const (
 //	return finfo.IsDirectory(), nil
 //}
 
+func LsPrint(path ...string) {
+	for _, r := range path {
+		//Processing for each argument
+		fileinfos, _ := ioutil.ReadDir(r)
+		for _, fileinfo := range fileinfos {
+			fmt.Println(fileinfo.Name())
+		}
+	}
+}
+
 func main() {
 
 	var (
@@ -38,19 +49,29 @@ func main() {
 		f = flag.Bool("f", false, "Not sort")
 		m = flag.Bool("m", false, "Format commas")
 		l = flag.Bool("l", false, "Show detail")
-
-		//Parameteir args
-		args string
 	)
 	flag.Parse()
+	//Parameteir args
+	args := flag.Args()
 
 	//Get current directory path
 	curDir, _ := os.Getwd()
 	curDir += "/"
 
 	//If no args, use curDir
-	if arg == "" {
-		arg = curDir
+	if len(args) == 0 {
+		//No argument
+		//append(args, curDir)
+		//args[0] = curDir
+		args := []string{curDir}
+		//fmt.Println(args)
+		LsPrint(args...)
+		//fmt.Println(curDir)
+	} else {
+		//There arguments
+		LsPrint(args...)
+		//fmt.Println(green, "args:", args, "len:", len(args), reset)
 	}
-	//fmt.Println(*a, *l)
+
+	fmt.Println("-a:", *a, "-f:", *f, "-m:", *m, "-l:", *l)
 }
